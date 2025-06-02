@@ -4,6 +4,7 @@ namespace GameOfLife.Engine
 {
     public class GameOfLifeService : IGameOfLifeService
     {
+        // live cells neighbors
         private static readonly (int deltaRow, int deltaColum)[] _neighbors =
         [
             (-1, -1),
@@ -25,6 +26,11 @@ namespace GameOfLife.Engine
             {
                 return nextGeneration;
             }
+
+            // For each alive cell, iterate through its 8 neighboring positions.
+            // For each neighbor, if it lies within the grid bounds, increment its count in the neighborCounts dictionary.
+            // This helps track how many live neighbors each cell (alive or dead) has,
+            // which is used to determine the next state of the grid in the Game of Life.
             foreach (var (row, column) in aliveCells)
             {
                 foreach (var (deltaRow, deltaColum) in _neighbors)
@@ -44,8 +50,15 @@ namespace GameOfLife.Engine
             {
                 bool isAlive = aliveCells.Contains(cell);
 
-                if (count == 3 && !isAlive) nextGeneration.Add(cell);      // Reproduction
-                else if ((count == 2 || count == 3) && isAlive) nextGeneration.Add(cell); // Survival
+                // cell is currently not alive, but has exactly 3 live neighbors
+                if (count == 3 && !isAlive)  // reproduction
+                {
+                    nextGeneration.Add(cell);
+                }     
+                else if ((count == 2 || count == 3) && isAlive)  // survival
+                {
+                    nextGeneration.Add(cell);
+                }
 
             }
             return nextGeneration;

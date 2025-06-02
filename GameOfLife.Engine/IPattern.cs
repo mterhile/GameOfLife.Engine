@@ -2,6 +2,7 @@
 
 namespace GameOfLife.Engine
 {
+    // base contract for the game of life patterns
     public interface IPattern
     {
         HashSet<(int Row, int Column)> AliveCells { get; set; }
